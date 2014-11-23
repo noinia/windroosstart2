@@ -1,0 +1,16 @@
+/static         StaticR Static getStatic
+/auth           AuthR   Auth   getAuth
+
+/favicon.ico            FaviconR    GET
+/robots.txt             RobotsR     GET
+
+/                       HomeR       GET POST
+/onderbouw              OnderbouwR  GET
+/bovenbouw              BovenbouwR  GET
+/leraar                 TeacherR    GET
+
+/tree/#NodeId           TreeR       GET
+
+/node/add               NodeAddR    GET POST
+/node/remove/#NodeId    NodeRemoveR GET      DELETE
+/node/update/#NodeId    NodeUpdateR GET POST
