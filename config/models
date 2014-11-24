@@ -8,12 +8,19 @@ Email
     user UserId Maybe
     verkey Text Maybe
     UniqueEmail email
-Node
-    parent NodeId
+Tag
+    tagName Text
+DBNode
+    parent DBNodeId
     description Text
-    url URL
+    url URL Maybe
     image FilePath Maybe
-    category Category Maybe
+TagNodeStore
+    tagId TagId
+    nodeId DBNodeId
+Post
+    title Text
+    content Text
 
 
 -- By default this file is used in Model.hs (which is imported by Foundation.hs)

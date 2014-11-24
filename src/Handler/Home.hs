@@ -41,7 +41,7 @@ sampleForm = renderBootstrap3 BootstrapBasicForm $ (,)
 
 
 getOnderbouwR :: Handler Html
-getOnderbouwR = undefined
+getOnderbouwR = getHomeR
 
 
 getBovenbouwR :: Handler Html

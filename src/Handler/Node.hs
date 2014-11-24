@@ -4,8 +4,9 @@ import Import
 
 
 getTreeR   :: NodeId -> Handler Html
-getTreeR i = undefined
-
+getTreeR i = runDB (getTree i) >>= \x -> case x of
+    Nothing -> return "error"
+    Just t  -> defaultLayout $ $(widgetFile "tree")
 
 getNodeAddR :: Handler Html
 getNodeAddR = undefined
