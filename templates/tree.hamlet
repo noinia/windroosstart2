@@ -1,0 +1,64 @@
+<div class="container">
+  Header Goes Here!
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>Hello, world!</h1>
+      <p>This is a template for a simple marketing or informational website. It includes
+         a large callout called a jumbotron and three supporting pieces of content. Use
+         it as a starting point to create something more unique.
+
+<div class="container">
+  $maybe u <- url t
+    <h1><a href=@u>#{description t}</a>
+  $nothing
+    <h1>#{description t}
+
+<div class="row withsep">
+  <div class="level1 block container">
+    <h1>Level 1 Title
+
+    <div class="col-md-4">
+      <ul class="level2">
+        <li> Level 2 Title Here
+          <ul class="level3">
+            <li>Level 3 Item
+
+
+    <div class="col-md-4">
+      <ul class="level2">
+        <li> Level 2 Title Here
+          <ul class="level3">
+            <li>Level 3 Item
+
+
+    <div class="col-md-4">
+      <ul class="level2">
+        <li> Level 2 Title Here
+          <ul class="level3">
+            <li>Level 3 Item
+
+
+<div class="row withsep">
+  <div class="level1 block container">
+    <h1>Level 1 Title
+
+    <div class="col-md-4">
+      <ul class="level2">
+        <li> Level 2 Title Here
+          <ul class="level3">
+            <li>Level 3 Item
+
+
+    <div class="col-md-4">
+      <ul class="level2">
+        <li> Level 2 Title Here
+          <ul class="level3">
+            <li>Level 3 Item
+
+
+    <div class="col-md-4">
+      <ul class="level2">
+        <li> Level 2 Title Here
+          <ul class="level3">
+            <li>Level 3 Item

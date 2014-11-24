@@ -1,0 +1,55 @@
+.withsep {
+    margin-bottom: 20px;
+}
+
+.block {
+    padding-bottom: 5px;
+    padding-top: 3px;
+}
+
+
+li {
+    margin-left: 0;
+}
+
+.level1 {
+    border-radius: 5px;
+    background-color: #fffac2;
+}
+
+.level2 {
+    border-radius: 5px;
+    background-color: #fffa8a;
+    padding-right: 2px;
+}
+
+.level2 li
+{
+    list-style-image: url('/static/images/windroos_logo.gif');
+}
+
+
+.level3 {
+    border-radius: 5px;
+    background-color: #f1c449;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.level3 ul {
+    padding-left: 0;
+    margin-left: 0;
+}
+
+.level3 li {
+    padding-left: 0;
+    margin-left: 0;
+    list-style-image: none;
+}
+
+
+.level4 {
+
+}
