@@ -10,7 +10,8 @@ import Model
 import Prelude
 import Yesod.Persist.Core
 
-data Node a = Node { dbNode    :: DBNode
+data Node a = Node { nodeId    :: NodeId
+                   , dbNode    :: DBNode
                    , dataValue :: a
                    , tags      :: [Tag]
                    , children  :: [Node a]
@@ -35,7 +36,7 @@ getTree i = node <$> get i
                                                    , DBNodeId          !=. rootId
                                                    ] [])
   where
-    node mi mTgs mChs = Node <$> mi <*> pure () <*> sequence mTgs <*> sequence mChs
+    node mi mTgs mChs = Node i <$> mi <*> pure () <*> sequence mTgs <*> sequence mChs
     get'        = get . tagNodeStoreTagId . entityVal
     getTree'    = getTree . dBNodeParent . entityVal
 
