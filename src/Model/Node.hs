@@ -10,12 +10,14 @@ import Model
 import Prelude
 import Yesod.Persist.Core
 
+
 data Node a = Node { nodeId    :: NodeId
                    , dbNode    :: DBNode
                    , dataValue :: a
                    , tags      :: [Tag]
                    , children  :: [Node a]
                    }
+
 
 description :: Node a -> Text
 description = dBNodeDescription . dbNode
@@ -32,13 +34,13 @@ image       = dBNodeImage . dbNode
 getTree   :: NodeId -> YesodDB App (Maybe (Node ()))
 getTree i = node <$> get i
                  <*> (mapM get'     =<< selectList [ TagNodeStoreNodeId ==. i] [])
-                 <*> (mapM getTree' =<< selectList [ DBNodeParent      ==. i
-                                                   , DBNodeId          !=. rootId
+                 <*> (mapM getTree' =<< selectList [ DBNodeParent       ==. i
+                                                   , DBNodeId           !=. rootId
                                                    ] [])
   where
     node mi mTgs mChs = Node i <$> mi <*> pure () <*> sequence mTgs <*> sequence mChs
     get'        = get . tagNodeStoreTagId . entityVal
-    getTree'    = getTree . dBNodeParent . entityVal
+    getTree'    = getTree . entityKey
 
 rootId :: NodeId
 rootId = DBNodeKey 0
