@@ -161,4 +161,5 @@ getExtra = fmap (appExtra . settings) getYesod
 --
 -- https://github.com/yesodweb/yesod/wiki/Sending-email
 
+getFilesPath :: Handler FilePath
 getFilesPath = return "files/"

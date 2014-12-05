@@ -1,5 +1,6 @@
 module Model.Node where
 
+import Control.Monad
 import Control.Applicative
 import Data.Text(Text)
 import Database.Persist((==.),(!=.))
@@ -44,3 +45,12 @@ getTree i = node <$> get i
 
 rootId :: NodeId
 rootId = DBNodeKey 0
+
+withId   :: NodeId -> Node a -> Maybe (Node a)
+withId i = findNode ((== i) . nodeId)
+
+
+findNode      :: (Node a -> Bool) -> Node a -> Maybe (Node a)
+findNode p n
+  | p n       = Just n
+  | otherwise = msum . map (findNode p) . children $ n

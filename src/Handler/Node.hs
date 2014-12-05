@@ -3,6 +3,7 @@ module Handler.Node where
 import Control.Applicative
 import Data.Text(unpack)
 import Import
+import System.FilePath
 
 import Debug.Trace
 
@@ -27,7 +28,7 @@ postNodeAddR i = getTreeFromDB i "add" $ \t -> do
   case result of
     FormSuccess (nc,fi) -> do
                              j <- runDB $ insert (nc Nothing)
-                             mfp <- moveFile fi
+                             mfp <- moveFile j fi
                              updateImage j mfp
                              redirect (NodeAddR i)
     _                   -> do
@@ -42,12 +43,16 @@ updateImage j = maybe (return ()) (runDB . updateFp)
     updateFp fp = update j [DBNodeImage =. Just fp]
 
 
-moveFile           :: Maybe FileInfo -> Handler (Maybe String)
-moveFile Nothing   = return Nothing
-moveFile (Just fi)
-  | isAllowed fi   = getFilesPath >>= \p ->
-                       let n  = unpack $ fileName fi
-                           fp = p <> "/" <> n
+-- | Given a node ID and a maybe file info of the uploaded file, move the file
+-- , scale it etc, and return the filepath of the new file.
+moveFile             :: NodeId -> Maybe FileInfo -> Handler (Maybe String)
+moveFile i Nothing   = return Nothing
+moveFile i (Just fi)
+  | isAllowed fi     = getFilesPath >>= \p ->
+                       let
+                           ext = takeExtensions . unpack $ fileName fi
+                           n   = show . toInteger . unDBNodeKey $ i
+                           fp  = p </> n <.> ext
                        in liftIO $ fileMove fi fp >> return (Just fp)
   | otherwise      = do
                        setMessage "Bestandsformaat niet toegestaan"
@@ -64,10 +69,6 @@ isAllowed fi = fileContentType fi `elem` allowedContentTypes
 
 --------
 
-getNodeRemoveR   :: NodeId -> Handler Html
-getNodeRemoveR i = undefined
-
-
 deleteNodeRemoveR   :: NodeId -> Handler Html
 deleteNodeRemoveR i = undefined
 
@@ -75,18 +76,20 @@ deleteNodeRemoveR i = undefined
 --------------------------------------------------------------------------------
 
 getNodeUpdateR    :: NodeId -> Handler Html
-getNodeUpdateR i = getTreeFromDB i "edit" $ \t -> do
-    (formWidget, enctype) <- generateFormPost $ nodeForm t (Just t)
+getNodeUpdateR i = getTreeFromDB rootId "edit" $ \r -> case withId i r of
+  Nothing -> return "error"
+  Just t  -> do
+    (formWidget, enctype) <- generateFormPost $ nodeForm r (Just t)
     let act        = NodeUpdateR i
         editWidget = $(widgetFile "nodeAdd")
     defaultLayout $ $(widgetFile "nodeUpdate")
 
 postNodeUpdateR   :: NodeId -> Handler Html
-postNodeUpdateR i = getTreeFromDB i "edit" $ \t -> do
-    ((result,_), _) <- runFormPost $ nodeForm t (Just t)
+postNodeUpdateR i = getTreeFromDB rootId "edit" $ \t -> do
+    ((result,_), _) <- runFormPost $ nodeForm t (withId i t)
     case result of
       FormSuccess (nc,fi) -> do
-                               mfp <- moveFile fi
+                               mfp <- moveFile i fi
                                runDB $ replace i (nc mfp)
                                redirect (NodeAddR i)
       _                   -> do
@@ -96,9 +99,10 @@ postNodeUpdateR i = getTreeFromDB i "edit" $ \t -> do
 --------------------------------------------------------------------------------
 
 getTreeFromDB       :: NodeId -> Html -> (Node () -> Handler Html) -> Handler Html
-getTreeFromDB i m h = runDB (getTree i) >>= \x -> case x of
+getTreeFromDB i m h = runDB (getTree rootId) >>= \x -> case x of
     Nothing -> return $ "error: " <> m
     Just t  -> h t
+
 
 --------------------------------------------------------------------------------
 

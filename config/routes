@@ -12,5 +12,5 @@
 /tree/#NodeId           TreeR       GET
 
 /node/add/#NodeId       NodeAddR    GET POST
-/node/remove/#NodeId    NodeRemoveR GET      DELETE
+/node/remove/#NodeId    NodeRemoveR          DELETE
 /node/update/#NodeId    NodeUpdateR GET POST
