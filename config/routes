@@ -14,3 +14,5 @@
 /node/add/#NodeId       NodeAddR    GET POST
 /node/remove/#NodeId    NodeRemoveR          DELETE
 /node/update/#NodeId    NodeUpdateR GET POST
+
+/image/#NodeId          ImageR      GET

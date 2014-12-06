@@ -14,7 +14,7 @@ DBNode
     parent DBNodeId
     description Text
     url URL Maybe
-    image FilePath Maybe
+    image String Maybe
 TagNodeStore
     tagId TagId
     nodeId DBNodeId

@@ -1,5 +1,9 @@
+{-# LANGUAGE TupleSections #-}
 module Model.Node where
 
+
+import Settings(allowedContentTypes)
+import Yesod.Core.Content(ContentType)
 import Control.Monad
 import Control.Applicative
 import Data.Text(Text)
@@ -10,7 +14,11 @@ import Foundation
 import Model
 import Prelude
 import Yesod.Persist.Core
+import System.FilePath((<.>))
+import qualified Data.ByteString.Char8 as B
 
+
+--------------------------------------------------------------------------------
 
 data Node a = Node { nodeId    :: NodeId
                    , dbNode    :: DBNode
@@ -29,8 +37,22 @@ parentId    = dBNodeParent . dbNode
 url         :: Node a -> Maybe URL
 url         = dBNodeUrl . dbNode
 
-image       :: Node a -> Maybe FilePath
-image       = dBNodeImage . dbNode
+imageContentType :: Node a -> Maybe ContentType
+imageContentType = fmap B.pack . dBNodeImage . dbNode
+
+image   :: Node a -> Maybe (ContentType, FilePath)
+image n = (,) <$> imageContentType n
+              <*> imageFilePath n
+
+imageFilePath   :: Node a -> Maybe FilePath
+imageFilePath n = (imageName (nodeId n) <.>) <$> imageExt n
+
+imageExt   :: Node a -> Maybe String
+imageExt n = imageContentType n >>= flip lookup allowedContentTypes
+
+imageName :: NodeId -> FilePath
+imageName = show . toInteger . unDBNodeKey
+
 
 getTree   :: NodeId -> YesodDB App (Maybe (Node ()))
 getTree i = node <$> get i

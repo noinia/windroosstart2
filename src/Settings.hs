@@ -5,6 +5,7 @@
 -- declared in the Foundation.hs file.
 module Settings where
 
+import Yesod.Core.Content
 import Prelude
 import Text.Shakespeare.Text (st)
 import Language.Haskell.TH.Syntax
@@ -74,3 +75,11 @@ parseExtra :: DefaultEnv -> Object -> Parser Extra
 parseExtra _ o = Extra
     <$> o .:  "copyright"
     <*> o .:? "analytics"
+
+
+-- map between allowed content types and file extensions
+allowedContentTypes :: [(ContentType,String)]
+allowedContentTypes = [ (typeJpeg, "jpg")
+                      , (typePng, "png")
+                      , (typeGif, "gif")
+                      ]
