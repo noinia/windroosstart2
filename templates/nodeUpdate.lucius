@@ -26,3 +26,17 @@ li {
     padding-top: 3px;
     padding-bottom: 3px;
 }
+
+
+.nodeImage {
+    max-width: 500px;
+    max-height: 500px;
+}
+
+.parentLink {
+    margin-bottom: 20px;
+}
+
+u {
+    margin-top: 10px;
+}
