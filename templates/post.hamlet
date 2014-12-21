@@ -1,7 +1,5 @@
 <h1>Post
 
-<form enctype=#{enctype} method="post" action=@{PostAddR}>
+<form enctype=#{enctype} method="post" action=@{act}>
   ^{formWidget}
   <button .btn .btn-primary type="submit">Ok
-
-

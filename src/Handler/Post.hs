@@ -1,13 +1,14 @@
 module Handler.Post where
 
 import Import
+import Yesod.Core(Route)
+
 
 getPostAddR :: Handler Html
-getPostAddR = getForm Nothing
+getPostAddR = getForm PostAddR Nothing
 
-
-getForm    :: Maybe Post -> Handler Html
-getForm mp = do
+getForm        :: Route App -> Maybe Post -> Handler Html
+getForm act mp = do
   (formWidget, enctype) <- generateFormPost $ postForm mp
   (defaultLayout $ $(widgetFile "post"))
 
@@ -23,7 +24,7 @@ postPostAddR = do
 
 
 getPostUpdateR   :: PostId -> Handler Html
-getPostUpdateR i = runDB (get i) >>= getForm
+getPostUpdateR i = runDB (get i) >>= getForm (PostUpdateR i)
 
 postPostUpdateR   :: PostId -> Handler Html
 postPostUpdateR i = do
@@ -52,6 +53,7 @@ visiblePosts :: Handler [Post]
 visiblePosts = runDB . fmap (map entityVal) $ selectList [PostVisible ==. True] []
 
 
+postAdminWidget :: Handler Widget
 postAdminWidget = do
     posts <- runDB . fmap (map f) $ selectList [] []
     return $(widgetFile "postAdmin")
