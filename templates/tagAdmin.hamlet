@@ -10,5 +10,3 @@
 <form enctype=#{enctype} method="post" action=@{TagCreateR}>
   ^{formWidget}
   <button .btn .btn-primary type="submit">Ok
-
-

@@ -20,6 +20,8 @@ import Handler.Post(visiblePosts)
 
 --------------------------------------------------------------------------------
 
+
+
 getTreeR   :: NodeId -> Handler Html
 getTreeR i = getTreeFromDB i "getTree" $ \t -> do
                posts <- visiblePosts
@@ -118,14 +120,20 @@ deleteImage = maybe (return ()) rm . imageFileName
 --------------------------------------------------------------------------------
 
 getNodeUpdateR    :: NodeId -> Handler Html
-getNodeUpdateR i = getTreeFromDB rootId "edit" $ \r -> case withId i r of
-  Nothing -> return "error"
+getNodeUpdateR i = nodeAdminWidget i >>= defaultLayout
+
+nodeAdminWidget   :: NodeId -> Handler Widget
+nodeAdminWidget i = getTreeFromDB rootId undefined $ \r -> case withId i r of
+  Nothing -> error "No such node"
   Just t  -> do
     tags <- allTags
     (formWidget, enctype) <- generateFormPost $ nodeForm r (Just t) tags
     let act        = NodeUpdateR i
         editWidget = $(widgetFile "nodeAdd")
-    defaultLayout $ $(widgetFile "nodeUpdate")
+    return $(widgetFile "nodeUpdate")
+
+
+
 
 postNodeUpdateR    :: NodeId -> Handler Html
 postNodeUpdateR i
@@ -166,9 +174,9 @@ getImageR i = getTreeFromDB i "image" $ \t -> do
 
 --------------------------------------------------------------------------------
 
-getTreeFromDB       :: NodeId -> Html -> (Node () -> Handler Html) -> Handler Html
+getTreeFromDB       :: NodeId -> a -> (Node () -> Handler a) -> Handler a
 getTreeFromDB i m h = runDB (getTree i) >>= \x -> case x of
-    Nothing -> return $ "error: " <> m
+    Nothing -> return m
     Just t  -> h t
 
 

@@ -9,10 +9,15 @@ allTags = runDB . fmap (M.fromList . map f) $ selectList [] []
     f e = (entityKey e, entityVal e)
 
 getTagAdminR :: Handler Html
-getTagAdminR = do
+getTagAdminR = tagAdminWidget >>= defaultLayout
+
+    -- defaultLayout $ $(widgetFile "tagAdmin")
+
+tagAdminWidget :: Handler Widget
+tagAdminWidget = do
     tags <- M.elems <$> allTags
     (formWidget, enctype) <- generateFormPost tagForm
-    defaultLayout $ $(widgetFile "tagAdmin")
+    return $(widgetFile "tagAdmin")
 
 
 

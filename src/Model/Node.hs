@@ -64,7 +64,9 @@ getTree i = node <$> get i
                                                    , DBNodeId           !=. rootId
                                                    ] [])
   where
-    node mi mTgs mChs = Node i <$> mi <*> pure () <*> sequence mTgs <*> sequence mChs
+    node mi mTgs mChs = Node i <$> mi <*> pure () <*> sequence mTgs
+                               <*> Just (catMaybes mChs) -- makes getting trees lazy
+                                                         --
     get'        = get . tagNodeStoreTagId . entityVal
     getTree'    = getTree . entityKey
 

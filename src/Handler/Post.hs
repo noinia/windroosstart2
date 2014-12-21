@@ -50,3 +50,10 @@ postForm mp = renderDivs $ (\t b (Textarea c) -> Post t b c)
 
 visiblePosts :: Handler [Post]
 visiblePosts = runDB . fmap (map entityVal) $ selectList [PostVisible ==. True] []
+
+
+postAdminWidget = do
+    posts <- runDB . fmap (map f) $ selectList [] []
+    return $(widgetFile "postAdmin")
+  where
+    f e = (entityKey e, entityVal e)

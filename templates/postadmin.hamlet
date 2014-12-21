@@ -1,0 +1,9 @@
+<h1>Posts
+
+<ul>
+  $forall (i,p) <- posts
+    <li><a href=@{PostUpdateR i}>#{postTitle p}</a>
+        <form .deleteForm method="delete" action=@{PostRemoveR i}>
+          <button .btn .btn-danger .btn-sm
+            type="submit"
+            data-title=#{postTitle p <> " verwijderen?"}>Verwijderen

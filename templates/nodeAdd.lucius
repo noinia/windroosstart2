@@ -14,15 +14,6 @@ input[type="file"] {
     display: inline;
 }
 
-
-#main {
-    background-color: #fffac2;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 30px;
-    padding-bottom: 30px;
-}
-
 button {
     margin-top: 10px;
 }

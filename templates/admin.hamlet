@@ -1,0 +1,10 @@
+<h1>Admin
+
+<div .adminContainer .container>
+    ^{postAdmin}
+
+<div .container .adminContainer>
+  ^{nodeAdmin}
+
+<div .container .adminContainer>
+  ^{tagAdmin}

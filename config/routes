@@ -27,3 +27,5 @@
 /post/add                      PostAddR       GET POST
 /post/update/#PostId           PostUpdateR    GET POST
 /post/remove/#PostId           PostRemoveR             DELETE
+
+/linkadmin                     AdminR         GET

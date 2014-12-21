@@ -1,4 +1,4 @@
-<h1>#{description t}
+<h1>Node: #{description t}
 
 <div .blk .parentLink>
   <a href=@{NodeUpdateR (parentId t)} .btn .btn-info>Naar Ouder</a>
