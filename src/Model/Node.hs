@@ -17,6 +17,8 @@ import Yesod.Persist.Core
 import System.FilePath((<.>))
 import qualified Data.ByteString.Char8 as B
 
+import qualified Data.Map as M
+import qualified Data.Set as S
 
 --------------------------------------------------------------------------------
 
@@ -76,3 +78,8 @@ findNode      :: (Node a -> Bool) -> Node a -> Maybe (Node a)
 findNode p n
   | p n       = Just n
   | otherwise = msum . map (findNode p) . children $ n
+
+
+tagIds       :: M.Map TagId Tag -> Node a -> [TagId]
+tagIds tgs n = let myTgs = S.fromList $ tags n
+               in M.keys . M.filter (`S.member` myTgs) $ tgs

@@ -43,3 +43,9 @@ share [mkPersist sqlSettings, mkMigrate "migrateAll"]
 
 
 type NodeId = DBNodeId
+
+instance Eq Tag where
+  (Tag t) == (Tag t') = t == t'
+
+instance Ord Tag where
+  (Tag t) <= (Tag t') = t <= t'

@@ -26,3 +26,7 @@ input[type="file"] {
 button {
     margin-top: 10px;
 }
+
+label input[type="checkbox"] {
+    clear: right;
+}

@@ -1,14 +1,16 @@
 module Handler.Tag where
 
 import Import
+import qualified Data.Map as M
 
-
-allTags :: Handler [Tag]
-allTags = runDB . fmap (map entityVal) $ selectList [] []
+allTags :: Handler (M.Map TagId Tag)
+allTags = runDB . fmap (M.fromList . map f) $ selectList [] []
+  where
+    f e = (entityKey e, entityVal e)
 
 getTagAdminR :: Handler Html
 getTagAdminR = do
-    tags <- allTags
+    tags <- M.elems <$> allTags
     (formWidget, enctype) <- generateFormPost tagForm
     defaultLayout $ $(widgetFile "tagAdmin")
 
@@ -25,7 +27,7 @@ postTagCreateR :: Handler Html
 postTagCreateR = do
     ((result,_), _) <- runFormPost tagForm
     case result of
-      FormSuccess (TagText t) -> do _ <- runDB $ insert (Tag t)
+      FormSuccess (TagText t) -> do runDB $ insert_ (Tag t)
                                     setMessage "Tag toegevoegd."
       _                       -> setMessage "Fout bij het toevoegen."
     redirect TagAdminR

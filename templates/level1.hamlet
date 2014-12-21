@@ -1,0 +1,6 @@
+<div class="row withsep">
+  <div class="level1 block container">
+    <h1>^{mLink t}
+
+    $forall c <- children t
+      ^{level2 c}

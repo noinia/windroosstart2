@@ -1,0 +1,6 @@
+<div class="col-md-4">
+  <ul class="level2">
+    <li>^{mLink t}
+
+    $forall c <- children t
+      ^{level3 c}

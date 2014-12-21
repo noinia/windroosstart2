@@ -53,3 +53,8 @@ li {
 .level4 {
 
 }
+
+.nodeImage {
+    max-width: 100%;
+    max-height: 200px;
+}
