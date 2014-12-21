@@ -21,6 +21,7 @@ TagNodeStore
     nodeId DBNodeId
 Post
     title Text
+    visible Bool
     content Text
 
 

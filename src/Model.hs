@@ -6,8 +6,12 @@ import Data.Text (Text)
 import Database.Persist.Quasi
 import Data.Typeable (Typeable)
 import Prelude
+import Text.Markdown(markdown,def)
 
 import qualified Data.Text as T
+import qualified Data.Text.Lazy as LT
+
+
 
 type URL = Text
 
@@ -49,3 +53,7 @@ instance Eq Tag where
 
 instance Ord Tag where
   (Tag t) <= (Tag t') = t <= t'
+
+
+postContentHtml :: Post -> Html
+postContentHtml = markdown def . LT.fromStrict . postContent

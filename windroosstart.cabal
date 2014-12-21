@@ -25,6 +25,8 @@ library
                      Handler.Home
                      Handler.Node
                      Handler.Tag
+                     Handler.Post
+
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT
@@ -78,6 +80,7 @@ library
                  -- , hsmagick                      >= 0.5
                  , filepath
                  , containers
+                 , markdown                      >= 0.1.10
 
     -- see https://github.com/yesodweb/yesod/issues/814
     if !os(windows)

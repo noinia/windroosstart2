@@ -23,3 +23,7 @@
 
 /tag/create                    TagCreateR         POST
 /tag/admin                     TagAdminR      GET
+
+/post/add                      PostAddR       GET POST
+/post/update/#PostId           PostUpdateR    GET POST
+/post/remove/#PostId           PostRemoveR             DELETE
