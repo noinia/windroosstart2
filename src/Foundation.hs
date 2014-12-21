@@ -89,10 +89,25 @@ instance Yesod App where
 
     -- Routes not requiring authentication.
     isAuthorized (AuthR _) _ = return Authorized
-    isAuthorized FaviconR _ = return Authorized
-    isAuthorized RobotsR _ = return Authorized
-    -- Default to Authorized for now.
-    isAuthorized _ _ = return Authorized
+    isAuthorized FaviconR  _ = return Authorized
+    isAuthorized RobotsR   _ = return Authorized
+
+    -- Freely allow accessing the public pages, block the rest
+    isAuthorized HomeR      _ = return Authorized
+    isAuthorized OnderbouwR _ = return Authorized
+    isAuthorized BovenbouwR _ = return Authorized
+    -- not sure we should make this one publically available
+    isAuthorized TeacherR   _ = return Authorized
+    -- Allow access to the tree pages
+    isAuthorized (TreeR _) _        = return Authorized
+    isAuthorized (TreeTagR _ _) _   = return Authorized
+    isAuthorized (TreeTagRootR _) _ = return Authorized
+    -- Allow access to the images
+    isAuthorized (ImageR _)       _ = return Authorized
+
+    -- FIXME: switch to:
+    isAuthorized _ _ = return AuthenticationRequired
+    -- isAuthorized _ _ = return Authorized
 
     -- This function creates static content files in the static folder
     -- and names them based on a hash of their content. This allows
