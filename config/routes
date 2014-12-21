@@ -16,3 +16,7 @@
 /node/update/#NodeId    NodeUpdateR GET POST
 
 /image/#NodeId          ImageR      GET
+
+
+/tag/create             TagCreateR      POST
+/tag/admin              TagAdminR   GET

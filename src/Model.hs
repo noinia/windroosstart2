@@ -1,12 +1,37 @@
 module Model where
 
+import Data.Char(isAlphaNum, isLower)
 import Yesod
 import Data.Text (Text)
 import Database.Persist.Quasi
 import Data.Typeable (Typeable)
 import Prelude
 
+import qualified Data.Text as T
+
 type URL = Text
+
+
+newtype TagText = TagText { unTT :: Text } deriving (Eq,Ord,Typeable,PersistField)
+
+instance Show TagText where
+  show (TagText t) = show t
+
+instance Read TagText where
+  readsPrec i = map (\(t,s) -> (TagText t,s)) . readsPrec i
+
+instance PathPiece TagText where
+  toPathPiece (TagText t) = toPathPiece t
+  fromPathPiece = either (const Nothing) Just . tagText
+
+
+tagText               :: Text -> Either Text TagText
+tagText s
+  | T.all isTagChar s = Right . TagText $ s
+  | otherwise         = Left "Invalid Tag"
+
+isTagChar   :: Char -> Bool
+isTagChar c = isLower c && isAlphaNum c
 
 
 -- You can define all of your database entities in the entities file.

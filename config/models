@@ -10,6 +10,7 @@ Email
     UniqueEmail email
 Tag
     tagName Text
+    UniqueTag tagName
 DBNode
     parent DBNodeId
     description Text
