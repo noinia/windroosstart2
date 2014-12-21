@@ -1,1 +1,3 @@
-$('[data-toggle="confirmation"]').confirmation();
+$('[data-toggle="confirmation"]').confirmation({
+    onConfirm : function () { alert($(this).closest("form").attr('action')); $(this).closest("form").submit(); }}
+);

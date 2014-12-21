@@ -25,5 +25,7 @@
       <li>
         <a href=@{NodeUpdateR (nodeId c)}>#{description c}</a>
         <form .deleteForm method="delete" action=@{NodeRemoveR (nodeId c)}>
-          <button .btn .btn-danger .btn-sm type="submit" data-toggle="confirmation">
-            Verwijderen
+          <button .btn .btn-danger .btn-sm
+            type="submit"
+            data-toggle="confirmation"
+            data-title=#{description c <> " verwijderen?"}>Verwijderen

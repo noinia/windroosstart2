@@ -37,6 +37,6 @@ li {
     margin-bottom: 20px;
 }
 
-u {
-    margin-top: 10px;
+ul {
+    margin-top: 30px;
 }

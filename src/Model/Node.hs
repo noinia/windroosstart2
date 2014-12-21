@@ -42,10 +42,10 @@ imageContentType = fmap B.pack . dBNodeImage . dbNode
 
 image   :: Node a -> Maybe (ContentType, FilePath)
 image n = (,) <$> imageContentType n
-              <*> imageFilePath n
+              <*> imageFileName n
 
-imageFilePath   :: Node a -> Maybe FilePath
-imageFilePath n = (imageName (nodeId n) <.>) <$> imageExt n
+imageFileName   :: Node a -> Maybe FilePath
+imageFileName n = (imageName (nodeId n) <.>) <$> imageExt n
 
 imageExt   :: Node a -> Maybe String
 imageExt n = imageContentType n >>= flip lookup allowedContentTypes

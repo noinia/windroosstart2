@@ -24,6 +24,7 @@ library
                      Settings.Development
                      Handler.Home
                      Handler.Node
+                     Handler.Tag
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT
@@ -74,6 +75,7 @@ library
                  , monad-logger                  >= 0.3        && < 0.4
                  , fast-logger                   >= 2.2        && < 2.3
                  , wai-logger                    >= 2.2        && < 2.3
+                 -- , hsmagick                      >= 0.5
                  , filepath
 
     -- see https://github.com/yesodweb/yesod/issues/814
