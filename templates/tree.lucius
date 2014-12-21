@@ -1,3 +1,7 @@
+h1 {
+    font-size: larger;
+}
+
 .withsep {
     margin-bottom: 20px;
 }
@@ -15,6 +19,10 @@ li {
 .level1 {
     border-radius: 5px;
     background-color: #fffac2;
+}
+
+.level1 h1  {
+    font-size: large;
 }
 
 .level2 {

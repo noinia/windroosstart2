@@ -16,7 +16,7 @@ getTagAdminR = do
 
 
 
--- tagForm :: AForm Handler TagText
+tagForm :: Form TagText
 tagForm = renderDivs $ TagText <$> areq tagField "tag" Nothing
   where
     tagField = check (fmap unTT . tagText) textField

@@ -1,22 +1,25 @@
 /static         StaticR Static getStatic
 /auth           AuthR   Auth   getAuth
 
-/favicon.ico            FaviconR    GET
-/robots.txt             RobotsR     GET
 
-/                       HomeR       GET POST
-/onderbouw              OnderbouwR  GET
-/bovenbouw              BovenbouwR  GET
-/leraar                 TeacherR    GET
+/favicon.ico                   FaviconR       GET
+/robots.txt                    RobotsR        GET
 
-/tree/#NodeId           TreeR       GET
+/                              HomeR          GET
+/onderbouw                     OnderbouwR     GET
+/bovenbouw                     BovenbouwR     GET
+/leraar                        TeacherR       GET
 
-/node/add/#NodeId       NodeAddR    GET POST
-/node/remove/#NodeId    NodeRemoveR          DELETE
-/node/update/#NodeId    NodeUpdateR GET POST
+/tree/#NodeId                  TreeR          GET
+/tree/#NodeId/tag/#TagText     TreeTagR       GET
+/tree/tag/#TagText             TreeTagRootR   GET
 
-/image/#NodeId          ImageR      GET
+/node/add/#NodeId              NodeAddR       GET POST
+/node/remove/#NodeId           NodeRemoveR             DELETE
+/node/update/#NodeId           NodeUpdateR    GET POST
+
+/image/#NodeId                 ImageR         GET
 
 
-/tag/create             TagCreateR      POST
-/tag/admin              TagAdminR   GET
+/tag/create                    TagCreateR         POST
+/tag/admin                     TagAdminR      GET

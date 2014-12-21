@@ -25,10 +25,18 @@ $newline never
     <body>
         <div class="container">
             <header>
+              <div class="container">
+                Header Goes Here!
+
+
             <div id="main" role="main">
               ^{pageBody pc}
+
+
             <footer>
                 #{extraCopyright $ appExtra $ settings master}
+
+
 
         \<!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.  chromium.org/developers/how-tos/chrome-frame-getting-started -->
         \<!--[if lt IE 7 ]>
@@ -36,3 +44,5 @@ $newline never
             <script>
                 window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})
         \<![endif]-->
+
+

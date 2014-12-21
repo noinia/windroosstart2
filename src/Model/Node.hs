@@ -1,21 +1,22 @@
 {-# LANGUAGE TupleSections #-}
 module Model.Node where
 
-
-import Settings(allowedContentTypes)
-import Yesod.Core.Content(ContentType)
-import Control.Monad
-import Control.Applicative
-import Data.Text(Text)
-import Database.Persist((==.),(!=.))
-import Database.Persist.Class(get,selectList)
-import Database.Persist.Types(Entity(..))
-import Foundation
-import Model
-import Prelude
-import Yesod.Persist.Core
-import System.FilePath((<.>))
+import           Control.Applicative
+import           Control.Monad
 import qualified Data.ByteString.Char8 as B
+import           Data.List((\\))
+import           Data.Maybe
+import           Data.Text(Text)
+import           Database.Persist((==.),(!=.))
+import           Database.Persist.Class(get,selectList)
+import           Database.Persist.Types(Entity(..))
+import           Foundation
+import           Model
+import           Prelude
+import           Settings(allowedContentTypes)
+import           System.FilePath((<.>))
+import           Yesod.Core.Content(ContentType)
+import           Yesod.Persist.Core
 
 import qualified Data.Map as M
 import qualified Data.Set as S
@@ -83,3 +84,17 @@ findNode p n
 tagIds       :: M.Map TagId Tag -> Node a -> [TagId]
 tagIds tgs n = let myTgs = S.fromList $ tags n
                in M.keys . M.filter (`S.member` myTgs) $ tgs
+
+filterNode :: (Node a -> Bool) -> Node a -> Maybe (Node a)
+filterNode p n
+  | p n       = Just $ n { children = mapMaybe (filterNode p) $ children n }
+  | otherwise = Nothing
+
+-- | Match all tags
+filterByTags     :: [Tag] -> Node a -> Maybe (Node a)
+filterByTags tgs = filterNode (\n -> allTags n || tagsMatch n)
+  where
+    allTags     = null . tags
+      -- Having no tags counts as matching everything
+    tagsMatch n = null $ tgs \\ (tags n)
+      -- If it has tags, then it should match all of the selected ones.

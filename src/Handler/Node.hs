@@ -23,6 +23,14 @@ getTreeR   :: NodeId -> Handler Html
 getTreeR i = getTreeFromDB i "getTree" $ \t ->
              (defaultLayout $ $(widgetFile "tree"))
 
+getTreeTagR                :: NodeId -> TagText -> Handler Html
+getTreeTagR i (TagText tg) = getTreeFromDB i "getTree" $ \t' ->
+    case filterByTags [Tag tg] t' of
+      Nothing -> notFound
+      Just t  -> (defaultLayout $ $(widgetFile "tree"))
+
+getTreeTagRootR :: TagText -> Handler Html
+getTreeTagRootR = getTreeTagR rootId
 
 --------------------------------------------------------------------------------
 
@@ -194,12 +202,18 @@ nodeField t = selectFieldList $ asList t
 
 --------------------------------------------------------------------------------
 
+mImage  :: Node a -> Widget
 mImage t = $(widgetFile "mimage")
 
+mLink    :: Node a -> Widget
 mLink t = $(widgetFile "mlink")
 
+
+level3    :: Node a -> Widget
 level3 t = $(widgetFile "level3")
 
+level2    :: Node a -> Widget
 level2 t = $(widgetFile "level2")
 
+level1    :: Node a -> Widget
 level1 t = $(widgetFile "level1")

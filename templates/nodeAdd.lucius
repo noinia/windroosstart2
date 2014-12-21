@@ -27,6 +27,11 @@ button {
     margin-top: 10px;
 }
 
-label input[type="checkbox"] {
-    clear: right;
+span label {
+    width: 90%;
+    padding-left: 140px;
+}
+
+input[type="checkbox"], input[type="radio"] {
+    width: 20px;
 }
