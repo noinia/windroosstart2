@@ -2,10 +2,37 @@ body {
     background-color: #d45126;
 }
 
-footer {
+header {
+    font-size: 650%;
+    /* adds stroke: */
+    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+    font-family: Bubblegum Sans;
+    background: radial-gradient(#fe9, #f1c449);
+    border-radius: 5px;
+    color: white;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+header img {
+    margin-left: 20px;
+    max-height: 100px;
+    max-width: 100px;
+    display: inline-block;
+}
+
+header, footer {
     text-align: center;
 }
 
 .jumbotron {
-    background-color: #fffac2;
+    border: 1px solid #fffac2;
+    background-color: inherit;
+    /* background-color: #d65a24; */
+}
+
+#message {
+    border: 1px solid white;
+    color: white;
+    width: 80%;
 }

@@ -16,6 +16,8 @@ $newline never
 
         ^{pageHead pc}
 
+          <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Bubblegum+Sans" />
+
         \<!--[if lt IE 9]>
         \<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         \<![endif]-->
@@ -25,8 +27,7 @@ $newline never
     <body>
         <div class="container">
             <header>
-              <div class="container">
-                Header Goes Here!
+              Windroos St@rt<img src="/static/images/logo_larger.png" alt=""/>
 
 
             <div id="main" role="main">
@@ -44,5 +45,3 @@ $newline never
             <script>
                 window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})
         \<![endif]-->
-
-

@@ -1,6 +1,6 @@
 $maybe msg <- mmsg
   <div .container .messages>
-    <div #message  .info .blk>#{msg}
+    <div #message .bg-info .blk >#{msg}
 
 <div #content>
   ^{widget}

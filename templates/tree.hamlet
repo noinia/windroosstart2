@@ -5,8 +5,5 @@
          a large callout called a jumbotron and three supporting pieces of content. Use
          it as a starting point to create something more unique.
 
-<div class="container">
-  <h1>^{mLink t}
-
 $forall c <- children t
   ^{level1 c}

@@ -1,5 +1,5 @@
 h1 {
-    font-size: larger;
+    font-size: 400%;
 }
 
 .withsep {
@@ -34,8 +34,9 @@ li {
 .level2 li
 {
     list-style-image: url('/static/images/windroos_logo.gif');
+    vertical-align: middle;
+    line-height: 15px;
 }
-
 
 .level3 {
     border-radius: 5px;
@@ -55,6 +56,11 @@ li {
     padding-left: 0;
     margin-left: 0;
     list-style-image: none;
+    color: #d45126;
+}
+
+.level3 a {
+    color: #d45126;
 }
 
 
