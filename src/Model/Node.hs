@@ -98,3 +98,6 @@ filterByTags tgs = filterNode (\n -> allTags n || tagsMatch n)
       -- Having no tags counts as matching everything
     tagsMatch n = null $ tgs \\ (tags n)
       -- If it has tags, then it should match all of the selected ones.
+
+hasChildren :: Node a -> Bool
+hasChildren = not . null . children

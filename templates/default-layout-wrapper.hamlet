@@ -27,7 +27,7 @@ $newline never
     <body>
         <div class="container">
             <header>
-              Windroos St@rt<img src="/static/images/logo_larger.png" alt=""/>
+              Windroos St@rt<img src="/static/images/windroos_logo.png" alt=""/>
 
 
             <div id="main" role="main">

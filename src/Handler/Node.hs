@@ -1,8 +1,9 @@
 module Handler.Node where
 
+
 import qualified Data.Map as M
 import           Control.Applicative
-import           Data.Maybe(fromJust)
+import           Data.Maybe(fromJust, fromMaybe)
 import           Data.Text(unpack)
 import           Import
 import           System.Directory(removeFile)
@@ -15,19 +16,22 @@ import qualified Data.Text as T
 import qualified Data.ByteString.Char8 as B
 
 import Handler.Tag(allTags)
-
+import Handler.Post(visiblePosts)
 
 --------------------------------------------------------------------------------
 
 getTreeR   :: NodeId -> Handler Html
-getTreeR i = getTreeFromDB i "getTree" $ \t ->
-             (defaultLayout $ $(widgetFile "tree"))
+getTreeR i = getTreeFromDB i "getTree" $ \t -> do
+               posts <- visiblePosts
+               (defaultLayout $ $(widgetFile "tree"))
 
 getTreeTagR                :: NodeId -> TagText -> Handler Html
 getTreeTagR i (TagText tg) = getTreeFromDB i "getTree" $ \t' ->
     case filterByTags [Tag tg] t' of
       Nothing -> notFound
-      Just t  -> (defaultLayout $ $(widgetFile "tree"))
+      Just t  -> do
+                   posts <- visiblePosts
+                   (defaultLayout $ $(widgetFile "tree"))
 
 getTreeTagRootR :: TagText -> Handler Html
 getTreeTagRootR = getTreeTagR rootId
@@ -173,9 +177,9 @@ getTreeFromDB i m h = runDB (getTree i) >>= \x -> case x of
 type DBNodeConstructor = (Maybe ContentType -> DBNode,Maybe FileInfo,[TagId])
 
 
-dbNodeC              :: NodeId -> Text -> Maybe URL -> Maybe FileInfo -> [TagId]
+dbNodeC              :: NodeId -> Text -> Maybe URL -> Maybe FileInfo -> Maybe [TagId]
                      -> DBNodeConstructor
-dbNodeC p n l fi tgs = (\ct -> DBNode p n l (B.unpack <$> ct), fi, tgs)
+dbNodeC p n l fi tgs = (\ct -> DBNode p n l (B.unpack <$> ct), fi, fromMaybe [] tgs)
 
 -- | First param is the root of the tree, This is assumed to be the default parent
 -- for a new node.
@@ -186,7 +190,7 @@ nodeForm root n allTgs = renderDivs $
             <*> areq textField                 "Naam"  (description  <$> n)
             <*> aopt urlField                  "Link"  (url          <$> n)
             <*> fileAFormOpt                   "Afbeelding"
-            <*> areq (checkboxesFieldList tgs) "Tags"  (tagIds allTgs <$> n)
+            <*> aopt (checkboxesFieldList tgs) "Tags"  (Just (tagIds allTgs <$> n))
   where
     parent = (parentId <$> n) <|> (Just $ nodeId root)
     tgs    :: [(Text,TagId)]

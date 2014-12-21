@@ -12,6 +12,8 @@ header {
     color: white;
     margin-top: 5px;
     margin-bottom: 10px;
+    padding-top: 50px;
+    padding-bottom: 20px;
 }
 
 header img {
@@ -26,13 +28,11 @@ header, footer {
 }
 
 .jumbotron {
-    border: 1px solid #fffac2;
-    background-color: inherit;
-    /* background-color: #d65a24; */
+    /* border: 1px solid #fffac2; */
+    /* background-color: inherit; */
+    background-color: #d65a24;
 }
 
 #message {
-    border: 1px solid white;
-    color: white;
     width: 80%;
 }

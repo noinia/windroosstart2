@@ -1,2 +1,5 @@
-<ul class="level3">
-  <li>^{mLink t}
+<li>^{mLink t}
+  $if hasChildren t
+    <ul>
+      $forall c <- children t
+        ^{mLink c}
