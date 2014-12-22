@@ -25,7 +25,7 @@ import Handler.Post(visiblePosts)
 getTreeR   :: NodeId -> Handler Html
 getTreeR i = getTreeFromDB i "getTree" $ \t -> do
                posts <- visiblePosts
-               (defaultLayout $ $(widgetFile "tree"))
+               adminLayout $ $(widgetFile "tree")
 
 getTreeTagR                :: NodeId -> TagText -> Handler Html
 getTreeTagR i (TagText tg) = getTreeFromDB i "getTree" $ \t' ->
@@ -33,7 +33,7 @@ getTreeTagR i (TagText tg) = getTreeFromDB i "getTree" $ \t' ->
       Nothing -> notFound
       Just t  -> do
                    posts <- visiblePosts
-                   (defaultLayout $ $(widgetFile "tree"))
+                   defaultLayout $ $(widgetFile "tree")
 
 getTreeTagRootR :: TagText -> Handler Html
 getTreeTagRootR = getTreeTagR rootId
@@ -45,7 +45,7 @@ getNodeAddR i = getTreeFromDB i "add" $ \t -> do
   tags <- allTags
   (formWidget, enctype) <- generateFormPost $ nodeForm t Nothing tags
   let act = NodeAddR i
-  defaultLayout $ $(widgetFile "nodeAdd")
+  adminLayout $ $(widgetFile "nodeAdd")
 
 postNodeAddR   :: NodeId -> Handler Html
 postNodeAddR i = getTreeFromDB i "add" $ \t -> do
@@ -120,11 +120,11 @@ deleteImage = maybe (return ()) rm . imageFileName
 --------------------------------------------------------------------------------
 
 getNodeUpdateR    :: NodeId -> Handler Html
-getNodeUpdateR i = nodeAdminWidget i >>= defaultLayout
+getNodeUpdateR i = nodeAdminWidget i >>= adminLayout
 
 nodeAdminWidget   :: NodeId -> Handler Widget
-nodeAdminWidget i = getTreeFromDB rootId undefined $ \r -> case withId i r of
-  Nothing -> error "No such node"
+nodeAdminWidget i = getTreeFromDB rootId (errorW "edit") $ \r -> case withId i r of
+  Nothing -> return $ errorW "Node niet gevonden."
   Just t  -> do
     tags <- allTags
     (formWidget, enctype) <- generateFormPost $ nodeForm r (Just t) tags
@@ -229,3 +229,6 @@ level2 t = $(widgetFile "level2")
 
 level1    :: Node a -> Widget
 level1 t = $(widgetFile "level1")
+
+errorW   :: Text -> Widget
+errorW e = $(widgetFile "error")
