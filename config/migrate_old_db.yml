@@ -1,0 +1,20 @@
+Default: &defaults
+  database: old_windroosstart.sqlite
+  poolsize: 10
+
+Development:
+  <<: *defaults
+
+Testing:
+  database: windroosstart_test.sqlite
+  <<: *defaults
+
+Staging:
+  database: windroosstart_staging.sqlite
+  poolsize: 100
+  <<: *defaults
+
+Production:
+  database: windroosstart_production.sqlite
+  poolsize: 100
+  <<: *defaults
