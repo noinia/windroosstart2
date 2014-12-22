@@ -15,7 +15,7 @@
 /tree/tag/#TagText             TreeTagRootR   GET
 
 /node/add/#NodeId              NodeAddR       GET POST
-/node/remove/#NodeId           NodeRemoveR             DELETE
+/node/remove/#NodeId           NodeRemoveR    GET
 /node/update/#NodeId           NodeUpdateR    GET POST
 
 /image/#NodeId                 ImageR         GET
@@ -26,6 +26,6 @@
 
 /post/add                      PostAddR       GET POST
 /post/update/#PostId           PostUpdateR    GET POST
-/post/remove/#PostId           PostRemoveR             DELETE
+/post/remove/#PostId           PostRemoveR    GET
 
 /linkadmin                     AdminR         GET

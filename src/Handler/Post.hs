@@ -37,10 +37,10 @@ postPostUpdateR i = do
     _             -> do setMessage "Fout bij het toevoegen."
                         redirect PostAddR
 
-deletePostRemoveR   :: PostId -> Handler Html
-deletePostRemoveR i = do runDB $ delete i
-                         setMessage "Post verwijderd."
-                         redirect HomeR
+getPostRemoveR   :: PostId -> Handler Html
+getPostRemoveR i = do runDB $ delete i
+                      setMessage "Post verwijderd."
+                      redirect AdminR
 
 postForm    :: Maybe Post -> Form Post
 postForm mp = renderDivs $ (\t b (Textarea c) -> Post t b c)

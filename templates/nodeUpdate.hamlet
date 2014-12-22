@@ -1,31 +1,33 @@
-<h1>Node: #{description t}
+<div .container .adminContainer>
 
-<div .blk .parentLink>
-  <a href=@{NodeUpdateR (parentId t)} .btn .btn-info>Naar Ouder</a>
+  <h1>Node: #{description t}
 
-<div .blk>
-  ^{editWidget}
+  <div .blk .parentLink>
+    <a href=@{NodeUpdateR (parentId t)} .btn .btn-info>Naar Ouder</a>
 
-<h2>Huidige Afbeelding
+  <div .blk>
+    ^{editWidget}
 
-<div .blk>
-  $maybe _ <- image t
-    <img .nodeImage src=@{ImageR (nodeId t)} alt=""/>
-  $nothing
-    <p>Geen
+  <h2>Huidige Afbeelding
 
-<h2>Kinderen
-<>
-<div .blk>
-  <a .btn .btn-success href=@{NodeAddR (nodeId t)}>Kind Toevoegen
+  <div .blk>
+    $maybe _ <- image t
+      <img .nodeImage src=@{ImageR (nodeId t)} alt=""/>
+    $nothing
+      <p>Geen
 
-<div .blk>
-  <ul>
-    $forall c <- children t
-      <li>
-        <a href=@{NodeUpdateR (nodeId c)}>#{description c}</a>
-        <form .deleteForm method="delete" action=@{NodeRemoveR (nodeId c)}>
-          <button .btn .btn-danger .btn-sm
-            type="submit"
-            data-toggle="confirmation"
-            data-title=#{description c <> " verwijderen?"}>Verwijderen
+  <h2>Kinderen
+  <>
+  <div .blk>
+    <a .btn .btn-success href=@{NodeAddR (nodeId t)}>Kind Toevoegen
+
+  <div .blk>
+    <ul .withButtons>
+      $forall c <- children t
+        <li>
+          <a href=@{NodeUpdateR (nodeId c)}>#{description c}</a>
+          <a .btn .btn-danger .btn-sm .deleteButton
+             href=@{NodeRemoveR (nodeId c)}
+             data-title=#{description c <> " verwijderen?"}
+             data-toggle="confirmation"
+          >Verwijderen

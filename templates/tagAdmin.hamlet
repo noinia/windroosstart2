@@ -1,12 +1,14 @@
-<h1>Tags
+<div .container .adminContainer>
 
-<ul>
-  $forall (Tag t) <- tags
-    <li>#{t}
+  <h1>Tags
+
+  <ul>
+    $forall (Tag t) <- tags
+      <li>#{t}
 
 
-<h1>Tag Toevoegen
+  <h1>Tag Toevoegen
 
-<form enctype=#{enctype} method="post" action=@{TagCreateR}>
-  ^{formWidget}
-  <button .btn .btn-primary type="submit">Ok
+  <form enctype=#{enctype} method="post" action=@{TagCreateR}>
+    ^{formWidget}
+     <button .btn .btn-primary type="submit">Ok

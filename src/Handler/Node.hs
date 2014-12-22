@@ -99,8 +99,8 @@ isAllowed fi = fileContentType' fi `elem` (map fst allowedContentTypes)
 
 --------
 
-deleteNodeRemoveR   :: NodeId -> Handler Html
-deleteNodeRemoveR i
+getNodeRemoveR   :: NodeId -> Handler Html
+getNodeRemoveR i
   | i == rootId     = do setMessage "Het is niet mogelijk de root te verwijderen"
                          redirect (NodeUpdateR i)
   | otherwise       = getTreeFromDB i "edit" $ \t -> do

@@ -1,9 +1,14 @@
-<h1>Posts
+<div .container .adminContainer>
 
-<ul>
-  $forall (i,p) <- posts
-    <li><a href=@{PostUpdateR i}>#{postTitle p}</a>
-        <form .deleteForm method="delete" action=@{PostRemoveR i}>
-          <button .btn .btn-danger .btn-sm
-            type="submit"
-            data-title=#{postTitle p <> " verwijderen?"}>Verwijderen
+  <h1>Posts
+
+  <a .btn .btn-success href=@{PostAddR}>Post Toevoegen
+
+  <ul .withButtons>
+    $forall (i,p) <- posts
+      <li><a href=@{PostUpdateR i}>#{postTitle p}</a>
+          <a .btn .btn-danger .btn-sm .deleteButton
+             href=@{PostRemoveR i}
+             data-title=#{postTitle p <> " verwijderen?"}
+             data-toggle="confirmation"
+          >Verwijderen

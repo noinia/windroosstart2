@@ -1,5 +1,7 @@
-<h1>Post
+<div .container .adminContainer>
 
-<form enctype=#{enctype} method="post" action=@{act}>
-  ^{formWidget}
-  <button .btn .btn-primary type="submit">Ok
+  <h1>Post
+
+  <form enctype=#{enctype} method="post" action=@{act}>
+    ^{formWidget}
+    <button .btn .btn-primary type="submit">Ok
