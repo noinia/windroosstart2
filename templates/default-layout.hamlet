@@ -1,3 +1,9 @@
+$maybe user <- muser
+  <div .container .userBlock .alert .alert-info>
+    Ingelogd als #{userIdent user}.
+
+    <a href=@{AuthR LogoutR} .btn .btn-danger>Uitloggen</a>
+
 $maybe msg <- mmsg
   <div .container .messages>
     <div #message .alert .alert-info>#{msg}

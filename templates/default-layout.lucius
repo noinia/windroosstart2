@@ -68,3 +68,14 @@ span label {
 input[type="checkbox"], input[type="radio"] {
     width: 20px;
 }
+
+.userBlock {
+    border-radius: 5px;
+    width: 100%;
+    margin-left: 0;
+}
+
+
+.userBlock .btn {
+    float: right;
+}

@@ -58,6 +58,9 @@ mkYesodData "App" $(parseRoutesFile "config/routes")
 
 type Form x = Html -> MForm (HandlerT App IO) (FormResult x, Widget)
 
+instance YesodAuthPersist App where
+  type AuthEntity App = User
+
 -- Please see the documentation for the Yesod typeclass. There are a number
 -- of settings which can be configured by overriding methods here.
 instance Yesod App where
@@ -71,7 +74,8 @@ instance Yesod App where
 
     defaultLayout widget = do
         master <- getYesod
-        mmsg <- getMessage
+        mmsg   <- getMessage
+        muser  <- maybeAuthId >>= maybe (return Nothing) getAuthEntity
 
         -- We break up the default layout into two components:
         -- default-layout is the contents of the body tag, and
@@ -165,7 +169,6 @@ instance YesodAuth App where
 
     authHttpManager = httpManager
 
-instance YesodAuthPersist App
 
 -- This instance is required to use forms. You can modify renderMessage to
 -- achieve customized and internationalized form validation messages.
