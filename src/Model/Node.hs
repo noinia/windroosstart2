@@ -70,9 +70,6 @@ getTree i = node <$> get i
     get'        = get . tagNodeStoreTagId . entityVal
     getTree'    = getTree . entityKey
 
-rootId :: NodeId
-rootId = DBNodeKey 0
-
 withId   :: NodeId -> Node a -> Maybe (Node a)
 withId i = findNode ((== i) . nodeId)
 

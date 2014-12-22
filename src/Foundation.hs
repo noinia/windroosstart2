@@ -1,23 +1,32 @@
+{-# LANGUAGE ScopedTypeVariables #-}
 module Foundation where
 
-import Prelude
-import Yesod
-import Yesod.Static
-import Yesod.Auth
-import Yesod.Auth.BrowserId
-import Yesod.Default.Config
-import Yesod.Default.Util (addStaticContentExternal)
-import Network.HTTP.Client.Conduit (Manager, HasHttpManager (getHttpManager))
-import qualified Settings
-import Settings.Development (development)
+
+import           Control.Applicative
+import           Control.Monad(when)
+import           Control.Monad.Trans.Reader(ReaderT)
+import           Data.Monoid
+import           Data.Proxy
+import qualified Data.Text.IO as TIO
 import qualified Database.Persist
-import Database.Persist.Sql (SqlBackend)
-import Settings.StaticFiles
-import Settings (widgetFile, Extra (..))
-import Model
-import Text.Jasmine (minifym)
-import Text.Hamlet (hamletFile)
-import Yesod.Core.Types (Logger)
+import           Database.Persist.Sql (SqlBackend)
+import           Model
+import           Network.HTTP.Client.Conduit (Manager, HasHttpManager (getHttpManager))
+import           Prelude
+import qualified Settings
+import           Settings (widgetFile, Extra (..))
+import           Settings.Development (development)
+import           Settings.StaticFiles
+import           Text.Hamlet (hamletFile)
+import           Text.Jasmine (minifym)
+import           Yesod
+import           Yesod.Auth
+import           Yesod.Auth.HashDB(getAuthIdHashDB, authHashDB, HashDBUser(..), setPassword)
+import           Yesod.Core.Types (Logger)
+import           Yesod.Default.Config
+import           Yesod.Default.Util (addStaticContentExternal)
+import           Yesod.Static
+
 
 -- | The site argument for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
@@ -105,9 +114,8 @@ instance Yesod App where
     -- Allow access to the images
     isAuthorized (ImageR _)       _ = return Authorized
 
-    -- FIXME: switch to:
-    isAuthorized _ _ = return AuthenticationRequired
-    -- isAuthorized _ _ = return Authorized
+    -- For the remaining pages, require authorization
+    isAuthorized _ _ = maybe AuthenticationRequired (const Authorized) <$> maybeAuthId
 
     -- This function creates static content files in the static folder
     -- and names them based on a hash of their content. This allows
@@ -138,26 +146,22 @@ instance YesodPersist App where
 instance YesodPersistRunner App where
     getDBRunner = defaultGetDBRunner connPool
 
+instance HashDBUser User where
+    userPasswordHash = userPassword
+    setPasswordHash h u = u { userPassword = Just h }
+
 instance YesodAuth App where
     type AuthId App = UserId
 
     -- Where to send a user after successful login
-    loginDest _ = HomeR
+    loginDest _ = AdminR
     -- Where to send a user after logout
     logoutDest _ = HomeR
 
-    getAuthId creds = runDB $ do
-        x <- getBy $ UniqueUser $ credsIdent creds
-        case x of
-            Just (Entity uid _) -> return $ Just uid
-            Nothing -> do
-                fmap Just $ insert User
-                    { userIdent = credsIdent creds
-                    , userPassword = Nothing
-                    }
+    getAuthId = getAuthIdHashDB AuthR (Just . UniqueUser)
 
     -- You can add other plugins like BrowserID, email or OAuth here
-    authPlugins _ = [authBrowserId def]
+    authPlugins _ = [ authHashDB (Just . UniqueUser) ]
 
     authHttpManager = httpManager
 
@@ -181,3 +185,41 @@ getExtra = fmap (appExtra . settings) getYesod
 
 getFilesPath :: Handler FilePath
 getFilesPath = return "uploaded_images"
+
+
+adminLayout :: Widget -> Handler Html
+adminLayout = defaultLayout
+
+
+-- | Initialize the database, i.e. make sure that we have a root node, at least one user
+--   and a bunch of tags.
+initializeDB :: MonadIO m => ReaderT SqlBackend m ()
+initializeDB = do
+    whenEmpty (Proxy :: Proxy User) $ do
+      u <- liftIO createNewUser
+      insert_ u
+    whenEmpty (Proxy :: Proxy DBNode) $
+      repsert rootId (DBNode rootId "root" Nothing Nothing)
+    whenEmpty (Proxy :: Proxy Tag) $
+      insertMany_ [ Tag "onderbouw"
+                  , Tag "bovenbouw"
+                  , Tag "leraar"
+                  ]
+  where
+    createNewUser :: IO User
+    createNewUser = do
+      putStrLn "No users found, adding new user"
+      putStrLn "username: "
+      un <- TIO.getLine
+      putStrLn "password: "
+      pw <- TIO.getLine
+      TIO.putStrLn $ "Creating a new user '" <> un <> "' with password '" <> pw <> "'."
+      setPassword pw (User un Nothing)
+
+    whenEmpty (Proxy :: Proxy a) h = do
+      num <- count ([] :: [Filter a])
+      when (num == 0) h
+
+
+rootId :: NodeId
+rootId = DBNodeKey 0
