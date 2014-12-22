@@ -2,4 +2,4 @@
   $if hasChildren t
     <ul .level4>
       $forall c <- children t
-        ^{mLink c}
+        <li>^{mLink c}
