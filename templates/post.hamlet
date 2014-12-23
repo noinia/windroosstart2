@@ -5,3 +5,5 @@
   <form enctype=#{enctype} method="post" action=@{act}>
     ^{formWidget}
     <button .btn .btn-primary type="submit">Ok
+
+    ^{markdownHelp}

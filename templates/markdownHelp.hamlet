@@ -1,0 +1,8 @@
+<div .markdownHelp>
+  <p>Tekst Opmaak is mogelijk met <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">Markdown</a>. Bijvoorbeeld:
+
+  <pre .markdownCode .col-md-6>
+    #{mdCode}
+
+  <div .markdownResult .col-md-6>
+    #{mdResult}
