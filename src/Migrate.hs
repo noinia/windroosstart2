@@ -105,3 +105,12 @@ migrateFromOld = do
   queryOld conf >>= insertNew conf -- mapM_ (print . dBNodeImage . (\(_,n,_) -> n))
 
     -- const (return ()) --  insertNew conf
+
+
+addTags' = do addTagsTo onderBouwId [Tag "onderbouw"]
+              addTagsTo bovenbouwId [Tag "bovenbouw"]
+  where
+    onderBouwId = DBNodeKey 463
+    bovenbouwId = DBNodeKey 462
+
+addTagsTo i tgs = getTree i >>= maybe (return ()) (storeTree . recursively (addTags tgs))
