@@ -25,28 +25,40 @@ type OldNode = ( Single Int, Single Int, Single Text
                , Maybe (Single Bool)
                )
 
--- queryOld      :: AppConfig DefaultEnv Extra -> (LogFunc -> IO SqlBackend)
---               -> IO [(NodeId, DBNode, Bool)]
-queryOld conf = do
+
+
+withOldDb conf query = do
     dbconf <- withYamlEnvironment "config/migrate_old_db.yml" (appEnv conf)
                 Database.Persist.loadConfig >>=
                 Database.Persist.applyEnv
     p <- runStderrLoggingT $
          createSqlitePool (sqlDatabase dbconf) (sqlPoolSize dbconf)
-
-    oldNodes <- runStderrLoggingT $
+    runStderrLoggingT $
                 Database.Persist.runPool dbconf query p
 
-    -- mapM_ moveFig oldNodes
-    return $ map f oldNodes
+moveFigs conf = do
+    xs <- withOldDb conf $ rawSql "SELECT id, img FROM node" []
+    mapM_ moveFig xs
+  where
+    moveFig :: (Single Int, Single FilePath) -> IO ()
+    moveFig (Single i, Single fp)
+      | not $ null fp = let path   = "uploaded_images/"
+                            oldFig = path <> fp
+                            newFig = path <> show i <> ".jpg"
+                        in renameFile oldFig newFig
+      | otherwise = return ()
+
+
+
+
+
+queryOld conf = map f <$> withOldDb conf query
   where
     query :: MonadIO m => ReaderT SqlBackend m [OldNode]
     query = rawSql "SELECT id, parent, name, url, img, priv FROM node" []
 
     fromInt :: Int -> NodeId
     fromInt = DBNodeKey . fromIntegral
-
-
 
     mkUrl u
       | T.length u < 1 = Nothing
@@ -64,8 +76,10 @@ queryOld conf = do
         DBNode (fromInt p) n (mkUrl murl) (mkImg mimg)
       , maybe False unSingle mteach)
 
-    -- moveFig (Single i, _, _, _, Just (Single fp), _) = return ()
-    -- moveFig _                                    = return ()
+
+
+
+
 
 
 insertNew conf oldNodes = do

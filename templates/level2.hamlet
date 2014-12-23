@@ -1,8 +1,8 @@
 <div .col-md-4 .container .l2container>
-  <div .level2>
+  <div .level2 .container>
     <h1><img src="/static/images/windroos_logo_small.png" alt=""/>
         <span>^{mLink t}
 
-    <ul .level3>
+    <ul .level3 .container>
       $forall c <- children t
         ^{level3 c}
