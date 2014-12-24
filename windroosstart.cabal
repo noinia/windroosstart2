@@ -26,6 +26,7 @@ library
                      Handler.Node
                      Handler.Tag
                      Handler.Post
+                     Handler.User
 
 
     if flag(dev) || flag(library-only)

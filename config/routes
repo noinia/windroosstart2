@@ -29,3 +29,5 @@
 /post/remove/#PostId           PostRemoveR    GET
 
 /linkadmin                     AdminR         GET
+
+/user/add                      UserAddR           POST

@@ -4,6 +4,7 @@ import Import
 import Handler.Node
 import Handler.Tag
 import Handler.Post
+import Handler.User
 
 --------------------------------------------------------------------------------
 
@@ -27,4 +28,5 @@ getAdminR = do
     tagAdmin  <- tagAdminWidget
     postAdmin <- postAdminWidget
     nodeAdmin <- nodeAdminWidget rootId
+    userAdmin <- userAdminWidget
     defaultLayout $ $(widgetFile "admin")

@@ -34,6 +34,7 @@ import           Handler.Home
 import           Handler.Node
 import           Handler.Tag
 import           Handler.Post
+import           Handler.User
 
 
 

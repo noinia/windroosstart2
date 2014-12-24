@@ -12,7 +12,7 @@ getPostAddR = getForm PostAddR Nothing
 getForm        :: Route App -> Maybe Post -> Handler Html
 getForm act mp = do
   (formWidget, enctype) <- generateFormPost $ postForm mp
-  (defaultLayout $ $(widgetFile "post"))
+  (adminLayout $ $(widgetFile "post"))
 
 postPostAddR :: Handler Html
 postPostAddR = do
