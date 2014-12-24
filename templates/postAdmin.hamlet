@@ -1,0 +1,14 @@
+<div .container .adminContainer>
+
+  <h1>Posts
+
+  <a .btn .btn-success href=@{PostAddR}>Post Toevoegen
+
+  <ul .withButtons>
+    $forall (i,p) <- posts
+      <li><a href=@{PostUpdateR i}>#{postTitle p}</a>
+          <a .btn .btn-danger .btn-sm .deleteButton
+             href=@{PostRemoveR i}
+             data-title=#{postTitle p <> " verwijderen?"}
+             data-toggle="confirmation"
+          >Verwijderen
