@@ -1,0 +1,6 @@
+<div .container .adminContainer>
+  <h1>Gebruiker Toevoegen
+
+  <form enctype=#{enctype} method="post" action=@{act}>
+    ^{formWidget}
+    <button .btn .btn-primary type="submit">Ok
