@@ -2,5 +2,6 @@
   <div class="level1 block container">
     <h1>^{mLink t}
 
-    $forall c <- children t
-      ^{level2 c}
+    <div class="container l1container" id=#{nodeChildrenHtmlId t} >
+      $forall c <- children t
+        ^{level2 c}

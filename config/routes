@@ -13,6 +13,7 @@
 /tree/#NodeId                  TreeR          GET
 /tree/#NodeId/tag/#TagText     TreeTagR       GET
 /tree/tag/#TagText             TreeTagRootR   GET
+/children/#NodeId              ChildrenR      GET
 
 /node/add/#NodeId              NodeAddR       GET POST
 /node/remove/#NodeId           NodeRemoveR    GET

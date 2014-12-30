@@ -1,4 +1,4 @@
 $maybe u <- url t
   <a href=#{u}>^{mImage t}</a>
 $nothing
-  ^{mImage t}
+  <span id=#{nodeHtmlId t}>^{mImage t}</span>

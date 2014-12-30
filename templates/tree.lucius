@@ -25,8 +25,14 @@ li {
     font-size: large;
 }
 
-.l2container {
-    padding-right: 0;
+.l1container {
+    column-count: 3;
+    column-gap: 5px;
+    -webkit-column-count: 3;
+    -webkit-column-gap: 5px;
+    -moz-column-count: 3;
+    -moz-column-gap: 5px;
+    display: none;
 }
 
 .level2 {
@@ -35,7 +41,18 @@ li {
     padding-right: 2px;
     padding-left: 3px;
     padding-top: 3px;
-    max-width: 90%;
+    max-width: 30%;
+    margin-bottom: 20px;
+
+
+    /* Don't break columns */
+    overflow: hidden; /* Fix for firefox and IE 10-11  */
+    -webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
+    page-break-inside: avoid; /* Deprecated Firefox */
+    -moz-column-break-inside:avoid; /* Current Firefox */
+    column-break-inside:avoid;
+    break-inside: avoid; /* IE 10+ */
+    break-inside: avoid-column;
 }
 
 .level2 h1 {
@@ -63,6 +80,7 @@ li {
     padding-left: 2px;
     padding-right: 0;
     width: 90%;
+    display: none;
 }
 
 .level3 li {
@@ -99,4 +117,8 @@ li {
 
 a img {
     display: inline-block;
+}
+
+.noLink {
+
 }

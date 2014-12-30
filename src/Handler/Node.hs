@@ -8,6 +8,7 @@ import           Data.Text(unpack)
 import           Import
 import           System.Directory(removeFile)
 import           System.FilePath
+import           Text.Julius(RawJS(..))
 
 import           Debug.Trace
 
@@ -20,6 +21,12 @@ import Handler.Post(visiblePosts)
 
 --------------------------------------------------------------------------------
 
+getChildrenR   :: NodeId -> Handler Html
+getChildrenR i = getTreeFromDB i "getChildren" $ \ft -> do
+  let t   = ft { children = map f $ children ft }
+      f n = n { children = [] }
+  posts <- visiblePosts
+  adminLayout $ $(widgetFile "tree")
 
 
 getTreeR   :: NodeId -> Handler Html
@@ -232,3 +239,9 @@ level1 t = $(widgetFile "level1")
 
 errorW   :: Text -> Widget
 errorW e = $(widgetFile "error")
+
+nodeChildrenHtmlId   :: Node a -> Text
+nodeChildrenHtmlId t =  nodeHtmlId t <> "_children"
+
+nodeHtmlId :: Node a -> Text
+nodeHtmlId = T.pack . show . toInteger . unDBNodeKey . nodeId

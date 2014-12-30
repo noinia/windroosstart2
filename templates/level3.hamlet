@@ -1,5 +1,5 @@
 <li .container>^{mLink t}
   $if hasChildren t
-    <ul .level4 .container>
+    <ul .level4 .container id=#{nodeChildrenHtmlId t}>
       $forall c <- children t
         <li>^{mLink c}
