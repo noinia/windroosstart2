@@ -1,5 +1,5 @@
 Default: &defaults
-  database: old_windroosstart.sqlite
+  database: windroosstart_2014_12_29.sqlite3
   poolsize: 10
 
 Development:
