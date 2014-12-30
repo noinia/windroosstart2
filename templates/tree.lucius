@@ -119,6 +119,6 @@ a img {
     display: inline-block;
 }
 
-.noLink {
-
+span.noLink:hover {
+    cursor: pointer;
 }
