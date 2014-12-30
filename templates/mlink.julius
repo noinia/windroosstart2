@@ -1,0 +1,3 @@
+$("#" + #{rawJS $ nodeHtmlId t}).click(function() {
+    $("#" + "#{rawJS $ nodeChildrenHtmlId t}").slideToggle()
+})
