@@ -12,6 +12,7 @@
 
 /tree/#NodeId                  TreeR          GET
 /tree/#NodeId/tag/#TagText     TreeTagR       GET
+/tree/#NodeId/not/tag/#TagText TreeNotTagR    GET
 /tree/tag/#TagText             TreeTagRootR   GET
 /children/#NodeId              ChildrenR      GET
 

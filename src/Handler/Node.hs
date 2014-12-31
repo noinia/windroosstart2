@@ -25,22 +25,29 @@ getChildrenR   :: NodeId -> Handler Html
 getChildrenR i = getTreeFromDB i "getChildren" $ \ft -> do
   let t   = ft { children = map f $ children ft }
       f n = n { children = [] }
-  posts <- visiblePosts
-  adminLayout $ $(widgetFile "tree")
+  withPosts t
 
 
-getTreeR   :: NodeId -> Handler Html
-getTreeR i = getTreeFromDB i "getTree" $ \t -> do
+withPosts   :: Node a -> Handler Html
+withPosts t = do
                posts <- visiblePosts
                adminLayout $ $(widgetFile "tree")
 
+
+getTreeR   :: NodeId -> Handler Html
+getTreeR i = getTreeFromDB i "getTree" withPosts
+
+getTreeNotTagR                :: NodeId -> TagText -> Handler Html
+getTreeNotTagR i (TagText tg) = getTreeFromDB i "getTree" (byTags False tg)
+
 getTreeTagR                :: NodeId -> TagText -> Handler Html
-getTreeTagR i (TagText tg) = getTreeFromDB i "getTree" $ \t' ->
-    case filterByTags [Tag tg] t' of
-      Nothing -> notFound
-      Just t  -> do
-                   posts <- visiblePosts
-                   defaultLayout $ $(widgetFile "tree")
+getTreeTagR i (TagText tg) = getTreeFromDB i "getTree" (byTags True tg)
+
+
+byTags         :: Bool -> Text -> Node a -> Handler Html
+byTags b tg t' = case filterByTags b [Tag tg] t' of
+    Nothing -> notFound
+    Just t  -> withPosts t
 
 getTreeTagRootR :: TagText -> Handler Html
 getTreeTagRootR = getTreeTagR rootId

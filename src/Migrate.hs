@@ -81,7 +81,6 @@ queryOld conf = map f <$> withOldDb conf query
 
 
 
-
 insertNew conf oldNodes = do
     dbconf <- withYamlEnvironment "config/sqlite.yml" (appEnv conf)
               Database.Persist.loadConfig >>=
@@ -92,7 +91,7 @@ insertNew conf oldNodes = do
     runStderrLoggingT
       (Database.Persist.runPool dbconf query p)
   where
-    teacherTagId = TagKey 3
+    teacherTagId = TagKey 1
 
     query = do
       mapM_ (\(i,n,_) -> repsert i n) oldNodes

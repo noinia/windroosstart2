@@ -8,15 +8,24 @@ import Handler.User
 
 --------------------------------------------------------------------------------
 
+bovenbouwId :: Key DBNode
+bovenbouwId = DBNodeKey 462
+
+onderbouwId :: Key DBNode
+onderbouwId = DBNodeKey 463
+
+teacherTag :: TagText
+teacherTag = TagText "leraar"
+
+
 getHomeR  :: Handler Html
-getHomeR = getTreeR rootId
+getHomeR = getTreeNotTagR rootId teacherTag
 
 getOnderbouwR :: Handler Html
-getOnderbouwR = getTreeTagRootR $ TagText "onderbouw"
-
+getOnderbouwR = getTreeNotTagR onderbouwId teacherTag
 
 getBovenbouwR :: Handler Html
-getBovenbouwR = getTreeTagRootR $ TagText "bovenbouw"
+getBovenbouwR = getTreeNotTagR bovenbouwId teacherTag
 
 
 getTeacherR :: Handler Html

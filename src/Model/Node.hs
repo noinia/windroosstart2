@@ -19,6 +19,8 @@ import           Yesod.Core.Content(ContentType)
 import           Yesod.Persist.Core
 
 
+import           Debug.Trace
+
 import qualified Data.Map as M
 import qualified Data.Set as S
 
@@ -69,7 +71,7 @@ getTree i = node <$> get i
                                <*> Just (catMaybes mChs) -- makes getting trees lazy
                                                          --
     get'        = get . tagNodeStoreTagId . entityVal
-    getTree'    = getTree . entityKey
+    getTree'    = getTree . (\j -> traceShow (i,j) j) . entityKey
 
 withId   :: NodeId -> Node a -> Maybe (Node a)
 withId i = findNode ((== i) . nodeId)
@@ -90,10 +92,11 @@ filterNode p n
   | p n       = Just $ n { children = mapMaybe (filterNode p) $ children n }
   | otherwise = Nothing
 
--- | Match all tags
-filterByTags     :: [Tag] -> Node a -> Maybe (Node a)
-filterByTags tgs = filterNode (\n -> allTags n || tagsMatch n)
+-- | Match all tags (or if the first arg is False, avoid all tags)
+filterByTags       :: Bool -> [Tag] -> Node a -> Maybe (Node a)
+filterByTags b tgs = filterNode (\n -> allTags n || p (tagsMatch n))
   where
+    p           = if b then id else not
     allTags     = null . tags
       -- Having no tags counts as matching everything
     tagsMatch n = null $ tgs \\ (tags n)
@@ -122,3 +125,6 @@ storeNode t = do
     deleteWhere [TagNodeStoreNodeId ==. i]
     insertMany_ . map (\e -> TagNodeStore (entityKey e) i) $ tagList
     replace i (dbNode t)
+
+size :: Node a -> Int
+size = (1 +) . sum . map size . children

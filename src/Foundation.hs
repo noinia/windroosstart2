@@ -112,10 +112,11 @@ instance Yesod App where
     -- not sure we should make this one publically available
     isAuthorized TeacherR   _ = return Authorized
     -- Allow access to the tree pages
-    isAuthorized (TreeR _) _        = return Authorized
-    isAuthorized (ChildrenR _) _    = return Authorized
-    isAuthorized (TreeTagR _ _) _   = return Authorized
-    isAuthorized (TreeTagRootR _) _ = return Authorized
+    isAuthorized (TreeR _) _         = return Authorized
+    isAuthorized (ChildrenR _) _     = return Authorized
+    isAuthorized (TreeTagR _ _) _    = return Authorized
+    isAuthorized (TreeNotTagR _ _) _ = return Authorized
+    isAuthorized (TreeTagRootR _) _  = return Authorized
     -- Allow access to the images
     isAuthorized (ImageR _)       _ = return Authorized
 
