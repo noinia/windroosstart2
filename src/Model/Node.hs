@@ -19,8 +19,6 @@ import           Yesod.Core.Content(ContentType)
 import           Yesod.Persist.Core
 
 
-import           Debug.Trace
-
 import qualified Data.Map as M
 import qualified Data.Set as S
 
@@ -71,7 +69,7 @@ getTree i = node <$> get i
                                <*> Just (catMaybes mChs) -- makes getting trees lazy
                                                          --
     get'        = get . tagNodeStoreTagId . entityVal
-    getTree'    = getTree . (\j -> traceShow (i,j) j) . entityKey
+    getTree'    = getTree . entityKey
 
 withId   :: NodeId -> Node a -> Maybe (Node a)
 withId i = findNode ((== i) . nodeId)
