@@ -20,7 +20,7 @@ postPostAddR = do
   case result of
     FormSuccess p -> do runDB $ insert_ p
                         setMessage "Post toegevoegd"
-                        redirect HomeR
+                        redirect AdminR
     _             -> do setMessage "Fout bij het toevoegen."
                         redirect PostAddR
 
@@ -35,7 +35,7 @@ postPostUpdateR i = do
   case result of
     FormSuccess p -> do runDB $ replace i p
                         setMessage "Post geupdate."
-                        redirect HomeR
+                        redirect AdminR
     _             -> do setMessage "Fout bij het toevoegen."
                         redirect PostAddR
 
