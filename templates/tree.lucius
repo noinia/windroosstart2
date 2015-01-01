@@ -89,6 +89,7 @@ li {
     list-style-type: none;
     color: #d45126;
     max-width: 100%;
+    font-weight: 500;
 }
 
 .level3 a {
@@ -98,8 +99,13 @@ li {
 
 .level4 {
     margin-left: 0;
-    padding-left: 5px;
+    margin-left: 10px;
     max-width: 100%;
+}
+
+.level4 li {
+    font-weight: normal;
+    list-style-type: circle;
 }
 
 .nodeImage {

@@ -33,6 +33,10 @@ header, footer {
     background-color: #d65a24;
 }
 
+.jumbotron h1 {
+    font-size: 300%;
+}
+
 #message {
     width: 80%;
 }
