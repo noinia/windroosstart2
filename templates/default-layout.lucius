@@ -138,3 +138,7 @@ textarea {
 .userBlock .btn {
     float: right;
 }
+
+.userBlock .btn {
+    margin-left: 80px;
+}
