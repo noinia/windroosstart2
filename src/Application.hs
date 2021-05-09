@@ -96,8 +96,8 @@ makeFoundation conf = do
     let foundation = mkFoundation p
 
     -- Perform database migration using our application's logging settings.
-    flip runLoggingT logFunc
-        (Database.Persist.runPool dbconf (runMigration migrateAll) p)
+    -- flip runLoggingT logFunc
+    --     (Database.Persist.runPool dbconf (runMigration migrateAll) p)
     -- initialize the DB
     flip runLoggingT logFunc
         (Database.Persist.runPool dbconf initializeDB p)
