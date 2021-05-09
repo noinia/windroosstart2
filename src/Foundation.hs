@@ -1,4 +1,6 @@
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE InstanceSigs #-}
 module Foundation where
 
 
@@ -21,11 +23,12 @@ import           Text.Hamlet (hamletFile)
 import           Text.Jasmine (minifym)
 import           Yesod
 import           Yesod.Auth
-import           Yesod.Auth.HashDB(getAuthIdHashDB, authHashDB, HashDBUser(..), setPassword)
+import           Yesod.Auth.HashDB(authHashDB, HashDBUser(..), setPassword)
 import           Yesod.Core.Types (Logger)
 import           Yesod.Default.Config
 import           Yesod.Default.Util (addStaticContentExternal)
 import           Yesod.Static
+import qualified Yesod.Auth.Message as Msg
 
 
 -- | The site argument for your application. This can be a good place to
@@ -93,9 +96,9 @@ instance Yesod App where
 
     -- This is done to provide an optimization for serving static files from
     -- a separate domain. Please see the staticRoot setting in Settings.hs
-    urlRenderOverride y (StaticR s) =
-        Just $ uncurry (joinPath y (Settings.staticRoot $ settings y)) $ renderRoute s
-    urlRenderOverride _ _ = Nothing
+    -- urlRenderOverride y (StaticR s) =
+    --     Just $ uncurry (joinPath y (Settings.staticRoot $ settings y)) $ renderRoute s
+    -- urlRenderOverride _ _ = Nothing
 
     -- The page to be redirected to when authentication is required.
     authRoute _ = Just $ AuthR LoginR
@@ -140,8 +143,8 @@ instance Yesod App where
 
     -- What messages should be logged. The following includes all messages when
     -- in development, and warnings and errors in production.
-    shouldLog _ _source level =
-        development || level == LevelWarn || level == LevelError
+    -- shouldLog _ _source level =
+    --     development || level == LevelWarn || level == LevelError
 
     makeLogger = return . appLogger
 
@@ -164,12 +167,24 @@ instance YesodAuth App where
     -- Where to send a user after logout
     logoutDest _ = HomeR
 
-    getAuthId = getAuthIdHashDB AuthR (Just . UniqueUser)
+    authenticate       :: (MonadHandler m, HandlerSite m ~ App)
+                       => Creds App -> m (AuthenticationResult App)
+    authenticate creds = liftHandler $
+                         maybeAuthId >>= \case
+                           Just uid -> pure $ Authenticated uid
+                           Nothing  -> lookupInDB
+      where
+        lookupInDB = let ci = credsIdent creds
+                         uu = UniqueUser ci
+                     in runDB (getBy uu) >>= \case
+                          Just (Entity uid _) -> pure $ Authenticated uid
+                          Nothing             -> pure $ UserError Msg.InvalidLogin
+
 
     -- You can add other plugins like BrowserID, email or OAuth here
     authPlugins _ = [ authHashDB (Just . UniqueUser) ]
 
-    authHttpManager = httpManager
+    -- authHttpManager = httpManager
 
 
 -- This instance is required to use forms. You can modify renderMessage to
