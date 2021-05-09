@@ -1,6 +1,6 @@
 module Handler.Tag where
 
-import Import
+import Import hiding (tags)
 import qualified Data.Map as M
 
 allTags :: Handler (M.Map TagId Tag)

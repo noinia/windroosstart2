@@ -1,23 +1,16 @@
 module Handler.Node where
 
-
-import qualified Data.Map as M
-import           Control.Applicative
-import           Data.Maybe(fromJust, fromMaybe)
-import           Data.Text(unpack)
-import           Import
-import           System.Directory(removeFile)
-import           System.FilePath
-import           Text.Julius(RawJS(..))
-
-import           Debug.Trace
-
-
-import qualified Data.Text as T
+import           Control.Applicative ((<|>))
 import qualified Data.ByteString.Char8 as B
-
-import Handler.Tag(allTags)
-import Handler.Post(visiblePosts)
+import qualified Data.Map as M
+import           Data.Maybe (fromJust, fromMaybe)
+import qualified Data.Text as T
+import           Handler.Post (visiblePosts)
+import           Handler.Tag (allTags)
+import           Import hiding (tags)
+import           System.Directory (removeFile)
+import           System.FilePath
+import           Text.Julius (RawJS(..))
 
 --------------------------------------------------------------------------------
 

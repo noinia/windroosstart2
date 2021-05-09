@@ -1,7 +1,6 @@
 module Handler.Post where
 
 import Import
-import Yesod.Core(Route)
 import Text.Markdown(markdown,def)
 import qualified Data.Text.Lazy.IO as TIO
 

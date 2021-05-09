@@ -1,4 +1,4 @@
-$maybe i <- image t
+$maybe _ <- image t
   <img .nodeImage src=@{ImageR (nodeId t)} alt=#{description t} />
 $nothing
   #{description t}
