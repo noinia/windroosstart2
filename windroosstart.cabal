@@ -105,10 +105,10 @@ executable         debughs
     if flag(library-only)
         Buildable: False
 
-    main-is:           debug.hs
+    main-is:           yesod.hs
     hs-source-dirs:    app
     build-depends:     base
-                     , wai, warp, http-types
+                     , wai, warp, http-types, yesod-core, text
 
     ghc-options:       -threaded -O2 -rtsopts -with-rtsopts=-N
 
