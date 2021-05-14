@@ -38,26 +38,27 @@ main = run 3000 =<< toWaiApp Minimal
 
 
 instance ParseRoute Minimal where
-  parseRoute
-    = anonF parseGo
-    where
-        -- anonF :: (() -> ([Text], [(Text, Text)]) -> Maybe (Route a))
-        --       -> ([Text], [(Text, Text)]) -> Maybe (Route a)
-        anonF = \ f qParams -> (f ()) qParams
+  parseRoute _ = Just RootR
 
-        parseGo env2437_a3EC req2437_a3ED
-          = go (fst req2437_a3ED)
-          where
-              go []
-                = ((((\ _ _ x_a3EG _ -> x_a3EG) (error "mdsGetHandler"))
-                      env2437_a3EC)
-                     (traceShowId $ Just RootR))
-                    req2437_a3ED
-              go _
-                = error "don't parse paths"
-                -- ((((\ _ _ x_a3EF _ -> x_a3EF) (error "mds404")) env2437_a3EC)
-                --      Nothing)
-                --     req2437_a3ED
+    -- = anonF parseGo
+    -- where
+    --     -- anonF :: (() -> ([Text], [(Text, Text)]) -> Maybe (Route a))
+    --     --       -> ([Text], [(Text, Text)]) -> Maybe (Route a)
+    --     anonF = \ f thePath0 -> (f ()) thePath0
+
+    --     parseGo env2437_a3EC thePath
+    --       = go (fst thePath)
+    --       where
+    --           go []
+    --             = ((((\ _ _ x_a3EG _ -> x_a3EG) (error "mdsGetHandler"))
+    --                   env2437_a3EC)
+    --                  (traceShowId $ Just RootR))
+    --                 thePath
+    --           go _
+    --             = error "don't parse paths"
+    --             -- ((((\ _ _ x_a3EF _ -> x_a3EF) (error "mds404")) env2437_a3EC)
+    --             --      Nothing)
+    --             --     thePath
 
 instance RenderRoute Minimal where
   data Route Minimal = RootR  deriving (Show, Eq, Read)
