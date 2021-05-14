@@ -70,21 +70,23 @@ instance RouteAttrs Minimal where
 
 
 instance YesodDispatch Minimal where
-  yesodDispatch env9720_a3Ez req9720_a3EA
-    = go (pathInfo req9720_a3EA)
-    where
-        go []
-          = case requestMethod req9720_a3EA of
-              "GET"
-                -> (((yesodRunner getRootR) env9720_a3Ez) (Just RootR))
-                     req9720_a3EA
-              _ -> error "don't care about other req types"
+  yesodDispatch runnerEnv req = case requestMethod req of
+              "GET" -> (((yesodRunner getRootR) runnerEnv) (Just RootR)) req
+              _     -> error "don't care about other req types"
 
-                -- (((yesodRunner (void badMethod)) env9720_a3Ez)
-                --       (Just RootR))
-                --      req9720_a3EA
-        go _
-          = error "pathInfo better be empty"
-          -- (((yesodRunner (void notFound)) env9720_a3Ez)
-          --      Nothing)
-          --     req9720_a3EA
+
+    -- go (pathInfo req)
+    -- where
+    --     go []
+    --       = case requestMethod req of
+    --           "GET" -> (((yesodRunner getRootR) runnerEnv) (Just RootR)) req
+    --           _     -> error "don't care about other req types"
+
+    --             -- (((yesodRunner (void badMethod)) runnerEnv)
+    --             --       (Just RootR))
+    --             --      req
+    --     go _
+    --       = error "pathInfo better be empty"
+    --       -- (((yesodRunner (void notFound)) runnerEnv)
+    --       --      Nothing)
+    --       --     req
