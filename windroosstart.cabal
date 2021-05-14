@@ -108,7 +108,7 @@ executable         debughs
     main-is:           yesod.hs
     hs-source-dirs:    app
     build-depends:     base
-                     , wai, warp, http-types, yesod-core, text
+                     , wai, warp, http-types, yesod-core, text, containers
 
     ghc-options:       -threaded -O2 -rtsopts -with-rtsopts=-N
 
