@@ -70,9 +70,12 @@ instance RouteAttrs Minimal where
 
 
 instance YesodDispatch Minimal where
-  yesodDispatch runnerEnv req = case requestMethod req of
-              "GET" -> (((yesodRunner getRootR) runnerEnv) (Just RootR)) req
-              _     -> error "don't care about other req types"
+  yesodDispatch runnerEnv req = yesodRunner getRootR runnerEnv (Just RootR) req
+
+
+    -- case requestMethod req of
+    --           "GET" -> yesodRunner getRootR runnerEnv (Just RootR) req
+    --           _     -> error "don't care about other req types"
 
 
     -- go (pathInfo req)
