@@ -3,6 +3,7 @@ module Application
     ( makeApplication
     , getApplicationDev
     , makeFoundation
+    , createUserApp
     ) where
 
 import qualified Database.Persist
@@ -22,7 +23,7 @@ import           Yesod.Default.Main
 
 import           Database.Persist.Sqlite (createSqlitePool, sqlDatabase, sqlPoolSize)
 import           Network.HTTP.Client.Conduit (newManager)
-import           Control.Monad.Logger (runLoggingT)
+import           Control.Monad.Logger (runLoggingT, runStdoutLoggingT)
 import           System.Log.FastLogger (newStdoutLoggerSet, defaultBufSize)
 import           Network.Wai.Logger (clockDateCacher)
 import           Data.Default (def)
@@ -119,3 +120,31 @@ getApplicationDev =
     loader = Yesod.Default.Config.loadConfig (configSettings Development)
         { csParseExtra = parseExtra
         }
+
+
+
+
+--------------------------------------------------------------------------------
+
+
+-- | Loads up any necessary settings, creates your foundation datatype, and
+-- performs some initialization.
+createUserApp :: AppConfig DefaultEnv Extra -> IO ()
+createUserApp conf = do
+    dbconf <- withYamlEnvironment "config/sqlite.yml" (appEnv conf)
+              Database.Persist.loadConfig >>=
+              Database.Persist.applyEnv
+
+    -- loggerSet' <- newStdoutLoggerSet defaultBufSize
+    -- (getter, _) <- clockDateCacher
+
+    -- let logger = Yesod.Core.Types.Logger loggerSet' getter
+    --     logFunc = messageLoggerSource undefined logger
+
+    p <- runStdoutLoggingT
+       $ createSqlitePool (sqlDatabase dbconf) (sqlPoolSize dbconf)
+
+    runStdoutLoggingT
+        (Database.Persist.runPool dbconf createUser p)
+
+    return ()

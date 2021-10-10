@@ -100,6 +100,18 @@ executable         windroosstart
 
     ghc-options:       -threaded -O2 -rtsopts -with-rtsopts=-N
 
+executable         windroosstart_create_user
+    if flag(library-only)
+        Buildable: False
+
+    main-is:           user.hs
+    hs-source-dirs:    app
+    build-depends:     base
+                     , windroosstart
+                     , yesod
+
+    ghc-options:       -threaded -O2 -rtsopts -with-rtsopts=-N
+
 
 executable         debughs
     if flag(library-only)
@@ -108,7 +120,7 @@ executable         debughs
     main-is:           yesod.hs
     hs-source-dirs:    app
     build-depends:     base
-                     , wai, warp, http-types, yesod-core, text, containers
+                     , wai, warp, http-types, yesod-core, text
 
     ghc-options:       -threaded -O2 -rtsopts -with-rtsopts=-N
 

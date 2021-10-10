@@ -123,6 +123,7 @@ instance Yesod App where
     isAuthorized (TreeTagRootR _) _  = return Authorized
     -- Allow access to the images
     isAuthorized (ImageR _)       _ = return Authorized
+    isAuthorized (StaticR _) _ = return Authorized
 
     -- For the remaining pages, require authorization
     isAuthorized _ _ = maybe AuthenticationRequired (const Authorized) <$> maybeAuthId
@@ -216,18 +217,26 @@ adminLayout = defaultLayout
 --   and a bunch of tags.
 initializeDB :: MonadIO m => ReaderT SqlBackend m ()
 initializeDB = do
-    whenEmpty (Proxy :: Proxy User) $ do
-      u <- liftIO createNewUser
-      insert_ u
+    whenEmpty (Proxy :: Proxy User) createUser
     whenEmpty (Proxy :: Proxy DBNode) $
       repsert rootId (DBNode rootId "root" Nothing Nothing)
     whenEmpty (Proxy :: Proxy Tag) $
-      insertMany_ [ Tag "leraar"
-                  ]
+      insertMany_ [ Tag "leraar"]
+  where
+    whenEmpty (Proxy :: Proxy a) h = do
+      num <- count ([] :: [Filter a])
+      when (num == 0) h
+
+createUser :: MonadIO m => ReaderT SqlBackend m ()
+createUser = do
+      u@(User userName _) <- liftIO createNewUser
+      getBy (UniqueUser userName) >>= \case
+        Just (Entity uid _) -> replace uid u
+        Nothing             -> insert_ u >> pure ()
   where
     createNewUser :: IO User
     createNewUser = do
-      putStrLn "No users found, adding new user"
+      putStrLn "Adding new user"
       putStrLn "username: "
       un <- TIO.getLine
       putStrLn "password: "
@@ -235,9 +244,6 @@ initializeDB = do
       TIO.putStrLn $ "Creating a new user '" <> un <> "' with password '" <> pw <> "'."
       setPassword pw (User un Nothing)
 
-    whenEmpty (Proxy :: Proxy a) h = do
-      num <- count ([] :: [Filter a])
-      when (num == 0) h
 
 
 rootId :: NodeId
